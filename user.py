@@ -1,9 +1,24 @@
-# user profile - includes name, height, weight, age, gender, and birthday
+class UserStats:
+    def __init__(self, data):
+        self.set_stats(data)
 
-name = "Alex" # string
-height = 5.7 # float
-weight = 165.0 # float
-age = 20 # int
-gender = "Male" # string
-birthday = ("06", "04", "2004") # string tuple
+    def get_stats(self):
+        return {
+            "fname": self.fname,
+            "lname": self.lname,
+            "height": self.height,
+            "weight": self.weight,
+            "age": self.age,
+            "gender": self.gender,
+            "birthday": self.birthday
+        }
+    
+    def set_stats(self, data):
+        self.fname = data['fname']
+        self.lname = data['lname']
+        self.height = data['height']
+        self.weight = data['weight']
+        self.age = data['age']
+        self.gender = data['gender']
+        self.birthday = data['birthday']
 
