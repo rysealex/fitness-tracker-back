@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 from user import UserStats
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 """
 'alexryse': UserStats({
@@ -34,4 +36,7 @@ def profile(username):
             return jsonify(user.get_stats()), 200
         else:
             return jsonify({"message": "user not found"}), 404
+    
+if __name__ == '__main__':
+    app.run(host='localhost', port=5000)  # Change 3000 to your desired port 
     
