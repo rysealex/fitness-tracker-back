@@ -24,15 +24,15 @@ def stats(username):
         data = request.get_json()
 
         # create user stats
-        user = UserStats(data)
-        user_database[username] = user
+        user_stats = UserStats(data)
+        user_database[username].set_user_stats(user_stats)
 
-        return jsonify({"message": f"user {username} created"}), 200
+        return jsonify({"message": f"user {username} stats created"}), 200
     elif request.method == 'GET':
         # return user stats
         if username in user_database:
             user = user_database[username]
-            return jsonify(user.get_stats()), 200
+            return jsonify(user.get_user_stats().get_stats()), 200
         else:
             return jsonify({"message": "user not found"}), 404
         
