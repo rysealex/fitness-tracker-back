@@ -1,0 +1,32 @@
+﻿Backend Notes:
+
+
+GET /user/{username}/stats
+* Returns {username} data
+
+
+POST /user/{username}/stats
+* Creates user data for {username}
+
+
+POST /user
+* Creates a user with username / password
+
+
+GET /user/{username}
+* Returns the username and password
+
+
+Functionality: 
+* Create a user (create account)
+Create a user class and set username/password
+
+
+* Add user information (stats)
+
+
+* Check if user exists (login)
+Get the username from the database and check if password is correct
+
+
+* Get user information (dashboard)
