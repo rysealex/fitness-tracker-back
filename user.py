@@ -1,3 +1,17 @@
+class User:
+    def __init__(self, data):
+        self.set_user(data)
+
+    def get_username(self):
+        return self.username
+    
+    def get_password(self):
+        return self.password
+
+    def set_user(self, data):
+        self.username = data['username']
+        self.password = data['password']
+
 class UserStats:
     def __init__(self, data):
         self.set_stats(data)
@@ -10,7 +24,6 @@ class UserStats:
             "weight": self.weight,
             "age": self.age,
             "gender": self.gender,
-            "birthday": self.birthday
         }
     
     def set_stats(self, data):
@@ -20,5 +33,4 @@ class UserStats:
         self.weight = data['weight']
         self.age = data['age']
         self.gender = data['gender']
-        self.birthday = data['birthday']
 
