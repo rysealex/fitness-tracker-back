@@ -1,7 +1,7 @@
 class User:
     def __init__(self, data):
         self.set_user(data)
-        self.stats = None
+        self.user_stats = None
 
     def get_username(self):
         return self.username
@@ -13,11 +13,11 @@ class User:
         self.username = data['username']
         self.password = data['password']
 
-    def set_user_stats(self, stats):
-        self.stats = stats
+    def set_user_stats(self, user_stats):
+        self.user_stats = user_stats
 
     def get_user_stats(self):
-        return self.stats.get_stats()
+        return self.user_stats
 
 class UserStats:
     def __init__(self, data):
@@ -40,4 +40,3 @@ class UserStats:
         self.weight = data['weight']
         self.age = data['age']
         self.gender = data['gender']
-
