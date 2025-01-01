@@ -18,7 +18,7 @@ CORS(app)
 
 user_database = {}
 
-@app.route('/user/<username>/stats', methods = ['POST', 'GET'])
+@app.route('/user/<username>/stats', methods = ['POST', 'GET', 'PUT'])
 def stats(username):
     if request.method == 'POST':
         data = request.get_json()
@@ -35,6 +35,24 @@ def stats(username):
             return jsonify(user.get_user_stats().get_stats()), 200
         else:
             return jsonify({"message": "user not found"}), 404
+    elif request.method == 'PUT':
+        # update user stats(weight, height)
+        if username not in user_database:
+            return jsonify({"message": "User not found"}), 404
+        data = request.get_json()
+        weight = data.get('weight')
+        height = data.get('height')
+        user = user_database[username]
+        user_stats = user.get_user_stats()
+        # update weight and height if provided in the request
+        if weight:
+            user_stats.set_weight(weight)
+        if height:
+            user_stats.set_height(height)
+        # save the updated stats
+        user.set_user_stats(user_stats)
+        return jsonify({"message": f"User {username} stats updated"}), 200
+
         
 @app.route('/user', methods = ['POST'])
 def create_user():
