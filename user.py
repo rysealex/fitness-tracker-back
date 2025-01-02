@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class User:
     def __init__(self, data):
         self.username = data.get('username')
@@ -22,7 +24,8 @@ class UserStats:
         self.lname = data.get('lname')
         self.height = data.get('height')
         self.weight = data.get('weight')
-        self.age = data.get('age')
+        #self.age = data.get('age')
+        self.birthday = data.get('birthday')
         self.gender = data.get('gender')
 
     def set_weight(self, weight):
@@ -30,13 +33,22 @@ class UserStats:
 
     def set_height(self, height):
         self.height = height
-        
+
+    def calculate_age(self):
+        birth_date = datetime.strptime(self.birthday, "%Y-%m-%d")
+        today = datetime.today()
+        age = today.year - birth_date.year
+        if today.month < birth_date.month or (today.month == birth_date.month and today.day < birth_date.day):
+            age -= 1
+        return age
+
     def get_stats(self):
         return {
             "fname": self.fname,
             "lname": self.lname,
             "height": self.height,
             "weight": self.weight,
-            "age": self.age,
+            "age": self.calculate_age(),
+            "birthday": self.birthday,
             "gender": self.gender
         }
