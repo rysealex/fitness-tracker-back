@@ -1,9 +1,12 @@
+import os
 from flask import Flask, request, jsonify
 from user import UserStats, User
 from flask_cors import CORS
+from flask import send_from_directory
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/user/*": {"origins": "http://localhost:3000"}})
 
 """
 'alexryse': UserStats({
@@ -16,7 +19,57 @@ CORS(app)
 })
 """
 
+# folder to save uploaded files
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# check if upload directory exists
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 user_database = {}
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/user/<username>/profile-pic', methods=['PUT'])
+def upload_profile_picture(username):
+    if request.method == 'OPTIONS':
+        return '', 200
+    
+    if username not in user_database:
+        return jsonify({"message": "User not found"}), 404
+    
+    user = user_database[username]
+
+    # Check if 'file' is in request.files
+    if 'file' not in request.files:
+        return jsonify({"message": "No file part"}), 400
+    
+    file = request.files['file']
+    
+    # Check if the file is empty
+    if file.filename == '':
+        return jsonify({"message": "No selected file"}), 400
+    
+    # Handle the file upload
+    filename = secure_filename(file.filename)
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    try:
+        file.save(filepath)  # Save the file to the uploads folder
+    except Exception as e:
+        return jsonify({"message": f"Error saving file: {str(e)}"}), 500
+
+    # Update user's profile with the file path
+    user_stats = user.get_user_stats()
+    user_stats.profile_pic = filepath  # Save the path of the profile picture
+    user.set_user_stats(user_stats)
+
+    return jsonify({
+        "message": "Profile picture updated successfully",
+        "profile_pic": f"/uploads/{filename}"  # Return the image URL
+    }), 200
 
 @app.route('/user/<username>/stats', methods = ['POST', 'GET', 'PUT'])
 def stats(username):

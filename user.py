@@ -24,9 +24,9 @@ class UserStats:
         self.lname = data.get('lname')
         self.height = data.get('height')
         self.weight = data.get('weight')
-        #self.age = data.get('age')
         self.birthday = data.get('birthday')
         self.gender = data.get('gender')
+        self.profile_pic = data.get('profile_pic')
 
     def set_weight(self, weight):
         self.weight = weight
@@ -50,5 +50,6 @@ class UserStats:
             "weight": self.weight,
             "age": self.calculate_age(),
             "birthday": self.birthday,
-            "gender": self.gender
+            "gender": self.gender,
+            "profilepic": self.profile_pic 
         }
